@@ -15,6 +15,11 @@ from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 from flask_cors import CORS, cross_origin
 import config as cfg
+# add package for connect to sql server
+import pyodbc
+import json
+import datetime
+import time
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/foo": {"origins": "*"}})
@@ -61,6 +66,28 @@ def save_image():
     # save image to static/images
     image.save(os.path.join("static/images/map", secure_filename(image.filename)))
     return {"status": "ok", "image_name": image.filename}
+
+@app.route("/history", methods=["GET"])
+def history():
+    # get data from sql server
+    # connect to sql server
+    conn = pyodbc.connect(
+        "Driver={SQL Server};"
+        "Server={};"
+        "Database={};".format(cfg.server_name, cfg.database),
+    )
+    cursor = conn.cursor()
+    # get data from sql server
+    sql = "SELECT * FROM {} ORDER BY ID DESC LIMIT 10".format(cfg.table_tank)
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    print(rows)
+    # get data from sql server
+    sql = "SELECT * FROM {} ORDER BY ID DESC LIMIT 10".format(cfg.table_product)
+    cursor.execute(sql)
+    rows1 = cursor.fetchall()
+    print(rows1)
+    return "ok"
 
 
 # socketio.emit("mqtt_message", data, namespace="/test")
