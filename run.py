@@ -78,15 +78,44 @@ def history():
     )
     cursor = conn.cursor()
     # get data from sql server
-    sql = "SELECT * FROM {} ORDER BY ID DESC LIMIT 10".format(cfg.table_tank)
-    cursor.execute(sql)
+    # select 10 rows from table
+    cursor.execute(
+        "SELECT TOP 10 * FROM {} ORDER BY ID DESC".format(cfg.table_tank)
+    )
     rows = cursor.fetchall()
-    print(rows)
-    # get data from sql server
-    sql = "SELECT * FROM {} ORDER BY ID DESC LIMIT 10".format(cfg.table_product)
+    # close connection
+    conn.close()
+    # convert data to json
+    data = []
+    for row in rows:
+        data.append(
+            {
+                "id": row[0],
+                "time": row[1].strftime("%Y-%m-%d %H:%M:%S"),
+                "level": row[2],
+                "volume": row[3],
+                "temperature": row[4],
+                "density": row[5],
+            }
+        )
+    # return render_template("history.html", data=data)
+    sql = "SELECT TOP 10 * FROM {} ORDER BY storedate".format(cfg.table_tank)
     cursor.execute(sql)
+    column = [column[0] for column in cursor.description]
+    rows = cursor.fetchall()
+    tank_data = []
+    for row in rows:
+        tank_data.append(dict(zip(column, row)))
+    print(tank_data)
+    # get data from sql server
+    sql = "SELECT TOP 10 * FROM {} ORDER BY storedate".format(cfg.table_product)
+    cursor.execute(sql)
+    column = [column[0] for column in cursor.description]
     rows1 = cursor.fetchall()
-    print(rows1)
+    product_data = []
+    for row in rows1:
+        product_data.append(dict(zip(column, row)))
+    print(product_data)
     return "ok"
 
 
