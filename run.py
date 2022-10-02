@@ -14,19 +14,19 @@ import os
 from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 from flask_cors import CORS, cross_origin
+import config as cfg
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/foo": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
-app.config["SECRET"] = "my secret key"
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config["MQTT_BROKER_URL"] = "broker.hivemq.com"
-app.config["MQTT_BROKER_PORT"] = 1883
-app.config["MQTT_USERNAME"] = ""
-app.config["MQTT_PASSWORD"] = ""
+app.config["MQTT_BROKER_URL"] = cfg.mqtt_url
+app.config["MQTT_BROKER_PORT"] = cfg.mqtt_port
+app.config["MQTT_USERNAME"] = cfg.mqtt_username
+app.config["MQTT_PASSWORD"] = cfg.mqtt_password
 app.config["MQTT_KEEPALIVE"] = 5
 app.config["MQTT_TLS_ENABLED"] = False
-app.config["MQTT_LAST_WILL_TOPIC"] = "home/office/temperature"
+app.config["MQTT_LAST_WILL_TOPIC"] = cfg.mqtt_topic
 mqtt = Mqtt(app)
 socketio = SocketIO(app)
 
