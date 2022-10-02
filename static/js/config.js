@@ -14,8 +14,8 @@ function save_image(){
         console.log(data);
         // set src image #map_image
         var map_image = document.getElementById("map_image");
-        console.log("../static/images/"+data.image_name)
-        map_image.src = "../static/images/"+data.image_name;
+        console.log("../static/images/map"+data.image_name)
+        map_image.src = "../static/images/map"+data.image_name;
         alert("Image saved successfully");
     })
 

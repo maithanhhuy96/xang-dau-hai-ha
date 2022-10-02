@@ -37,7 +37,7 @@ ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def index():
     # get the first image name from static/images
-    image_names = os.listdir("static/images")
+    image_names = os.listdir("static/images/map")
     if len(image_names) > 0:
         first_image_name = image_names[0]
     else:
@@ -56,10 +56,10 @@ def save_image():
     # from ImmutableMultiDict([('image', <FileStorage: 'image.png' ('image/png')>)])
     image = request.files["image"]
     # delete all images in static/images
-    for file in os.listdir("static/images"):
-        os.remove(os.path.join("static/images", file))
+    for file in os.listdir("static/images/map"):
+        os.remove(os.path.join("static/images/map", file))
     # save image to static/images
-    image.save(os.path.join("static/images", secure_filename(image.filename)))
+    image.save(os.path.join("static/images/map", secure_filename(image.filename)))
     return {"status": "ok", "image_name": image.filename}
 
 
