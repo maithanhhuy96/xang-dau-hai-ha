@@ -92,7 +92,7 @@ function update_data_table() {
         density.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].density).toFixed(1) + '</span></td>';
         var vcf = row.insertCell(5);
         vcf.className = "align-middle text-center text-sm";
-        // 1 decimal place
+        // 1 decimal place not round
         vcf.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].vcf).toFixed(1) + '</span></td>';
         var grossvolume = row.insertCell(6);
         grossvolume.className = "align-middle text-center text-sm";
@@ -181,7 +181,7 @@ function view_detail(row_index){
 //     socketio.emit("mqtt_message", message, namespace="/test")
 // import socketio
 document.addEventListener('DOMContentLoaded', () => {
-    var server_address = 'http://127.0.0.1:4000';
+    var server_address = 'http://' +document.domain + ':' +location.port;
     var socket = io.connect(server_address);
 
     socket.on('connect', () => {
@@ -195,7 +195,11 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     socket.on('mqtt_message', (data) => {
-        overiew_data = JSON.parse(data)["tankdata"];
+        
+        temp = JSON.parse(data);
+        overiew_data = temp.tankdata;
+        console.log(data);
+        console.log(overiew_data);
         // update data
         update_data_table();
         // update table
