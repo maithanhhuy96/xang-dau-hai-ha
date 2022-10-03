@@ -27,15 +27,15 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/foo": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config["MQTT_BROKER_URL"] = cfg.mqtt_url
-app.config["MQTT_BROKER_PORT"] = cfg.mqtt_port
+app.config["MQTT_BROKER_URL"] = "127.0.0.1"
+app.config["MQTT_BROKER_PORT"] = 1883
 app.config["MQTT_USERNAME"] = cfg.mqtt_username
 app.config["MQTT_PASSWORD"] = cfg.mqtt_password
 app.config["MQTT_KEEPALIVE"] = 5
 app.config["MQTT_TLS_ENABLED"] = False
 app.config["MQTT_LAST_WILL_TOPIC"] = cfg.mqtt_topic
-mqtt = Mqtt(app)
 socketio = SocketIO(app)
+mqtt = Mqtt(app)
 bootstrap = Bootstrap(app)
 
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
@@ -160,4 +160,4 @@ def handle_mqtt_message(client, userdata, message):
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='127.0.0.1', port=5000, use_reloader=False, debug=True)
+    socketio.run(app, host='127.0.0.1', port=4000, use_reloader=False, debug=True)
