@@ -19,7 +19,6 @@ import config as cfg
 import pyodbc
 import json
 import datetime
-import requests
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/foo": {"origins": "*"}})

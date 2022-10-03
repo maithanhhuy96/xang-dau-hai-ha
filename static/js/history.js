@@ -33,7 +33,7 @@ function get_tank_data(){
             for (var i = 0; i < data.length; i++) {
                 var row = data[i];
                 var row_html = "<tr>";
-                row_html += "<td class='text-center'>" + row["storedata"] + "</td>";
+                row_html += "<td class='text-center'>" + row["storedate"] + "</td>";
                 row_html += "<td class='text-center'>" + row["tankno"] + "</td>";
                 row_html += "<td class='text-center'>" + row["product"] + "</td>";
                 row_html += "<td class='text-center'>" + row["level"] + "</td>";
@@ -87,7 +87,7 @@ function get_product_data(){
             for (var i = 0; i < data.length; i++) {
                 var row = data[i];
                 var row_html = "<tr>";
-                row_html += "<td class='text-center'>" + row["storedata"] + "</td>";
+                row_html += "<td class='text-center'>" + row["storedate"] + "</td>";
                 row_html += "<td class='text-center'>" + row["product"] + "</td>";
                 row_html += "<td class='text-center'>" + row["totalgrossvolume"] + "</td>";
                 row_html += "<td class='text-center'>" + row["totalnetvolume"] + "</td>";
@@ -101,4 +101,55 @@ function get_product_data(){
     else {
         alert("Please fill all the fields");
     }
+}
+
+function export_tank_data(){
+    // // export tank history in table #tank-table to csv
+    // var table = document.getElementById("tanktable");
+    // var csv = [];
+    // for (var i = 0; i < table.rows.length; i++) {
+    //     var row = [];
+    //     for (var j = 0; j < table.rows[i].cells.length; j++) {
+    //         row.push(table.rows[i].cells[j].innerText);
+    //     }
+    //     csv.push(row.join(","));
+    // }
+    // // Download CSV file
+
+    // dowload excel file
+    var table = document.getElementById("tanktable");
+    var wb = XLSX.utils.table_to_book(table);
+    var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
+    }
+    // saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'tank_history.xlsx');
+    // dowload excel file don't use saveAs
+    var blob = new Blob([s2ab(wbout)],{type:"application/octet-stream"});
+    var link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'tank_history.xlsx';
+    link.click();
+
+
+
+    
+}
+
+function export_product_data(){
+    // export product history in table #product-table to csv
+    var table = document.getElementById("producttable");
+    var csv = [];
+    for (var i = 0; i < table.rows.length; i++) {
+        var row = [];
+        for (var j = 0; j < table.rows[i].cells.length; j++) {
+            row.push(table.rows[i].cells[j].innerText);
+        }
+        csv.push(row.join(","));
+    }
+    // Download CSV file
+    downloadCSV(csv.join("\n"), 'product_history.csv');
 }
