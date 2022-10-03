@@ -7,7 +7,7 @@
   <!-- <link rel="apple-touch-icon" sizes="76x76" href="../../assets/img/apple-icon.png"> -->
   <!-- <link rel="icon" type="image/png" href="../../assets/img/favicon.png"> -->
   <title>
-    DASHBOARD
+    {{ title }}
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
@@ -50,8 +50,9 @@
   <!-- Navbar Light -->
   <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
     <div class="container">
-      <a class="navbar-brand" rel="tooltip" title="Designed and Coded by Creative Tim" data-placement="bottom" target="_blank">
-        KHO XĂNG DẦU HẢI HÀ - QUẢNG TRỊ
+      <a class="navbar-brand" rel="tooltip" data-placement="bottom" target="_blank">
+        <!-- add from page_config variable jinra2 -->
+        {{ page_config['name'] }}
       </a>
       <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon mt-2">
@@ -72,12 +73,6 @@
             <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" href="/history" >
               <i class="material-icons opacity-6 me-2 text-md">history</i>
               History
-            </a>
-          </li>
-          <li class="nav-item dropdown dropdown-hover mx-2">
-            <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" href="/config">
-              <i class="material-icons opacity-6 me-2 text-md">settings</i>
-              Configuration
             </a>
           </li>
         </ul>
@@ -214,7 +209,7 @@
             <div class="col-md-7">
               <!-- create dropdow with option Xăng RON92, Xăng RON95, Dầu DO 0.05S, Xăng E5 RON92 -->
               <!-- set middle -->
-              <div class="form-group" id="tank_image" style="background-image: url('../static/images/core/tank.png');background-size: contain; height: 100%;background-repeat:no-repeat;">
+              <div class="form-group" id="tank_image" style="background-image: url('../static/images/core/tank.jpg');background-size: contain; height: 100%;background-repeat:no-repeat;">
                 <div id="level_image" style="background-color: #fff; position: relative; top: 60%; left: 65%; transform: translate(-50%, -50%);">
                   <div style="color: #3d15e4; position: relative; top: 0; left: 0; width: 100%; height: 50%;z-index: 0; text-align: center;">0.000</div>
                 </div>
