@@ -181,8 +181,8 @@ function view_detail(row_index){
 //     socketio.emit("mqtt_message", message, namespace="/test")
 // import socketio
 document.addEventListener('DOMContentLoaded', () => {
-    var server_address = 'http://127.0.0.1:5000';
-    var socket = io(server_address);
+    var server_address = 'http://127.0.0.1:4000';
+    var socket = io.connect(server_address);
 
     socket.on('connect', () => {
         console.log("connect");

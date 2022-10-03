@@ -1,5 +1,6 @@
 # create flask server
 from re import A
+import eventlet
 from flask import (
     Flask,
     flash,
@@ -19,7 +20,9 @@ import config as cfg
 import pyodbc
 import json
 import datetime
+from flask_bootstrap import Bootstrap
 
+eventlet.monkey_patch()
 app = Flask(__name__)
 cors = CORS(app, resources={r"/foo": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -33,6 +36,7 @@ app.config["MQTT_TLS_ENABLED"] = False
 app.config["MQTT_LAST_WILL_TOPIC"] = cfg.mqtt_topic
 mqtt = Mqtt(app)
 socketio = SocketIO(app)
+bootstrap = Bootstrap(app)
 
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 
@@ -134,12 +138,12 @@ def product_history():
     }
 
 # socketio.emit("mqtt_message", data, namespace="/test")
-@socketio.on("mqtt_message", namespace="/test")
+@socketio.on("mqtt_message")
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def handle_mqtt_message(message):
     print("message received socket: ", message)
     data = message["tank_data"]
-    socketio.emit("mqtt_message", data, namespace="/test")
+    socketio.emit("mqtt_message", data)
 
 
 @mqtt.on_connect()
@@ -151,12 +155,9 @@ def handle_connect(client, userdata, flags, rc):
 def handle_mqtt_message(client, userdata, message):
     print("message dslak received: ", message.payload.decode())
     # send message to client
-    socketio.emit("mqtt_message", message.payload.decode(), namespace="/test")
+    socketio.emit("mqtt_message", message.payload.decode())
 
 
 
-if __name__ == "__main__":
-    # app.run(port=5000, debug=True)
-    socketio.run(
-        app, host="127.0.0.1", port=5000, use_reloader=False, debug=True
-    )
+if __name__ == '__main__':
+    socketio.run(app, host='127.0.0.1', port=5000, use_reloader=False, debug=True)
