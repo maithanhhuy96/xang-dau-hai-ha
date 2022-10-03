@@ -35,8 +35,8 @@ app.config["MQTT_KEEPALIVE"] = 5
 app.config["MQTT_TLS_ENABLED"] = False
 app.config["MQTT_LAST_WILL_TOPIC"] = cfg.mqtt_topic
 socketio = SocketIO(app)
-mqtt = Mqtt(app)
 bootstrap = Bootstrap(app)
+mqtt = Mqtt(app)
 
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 

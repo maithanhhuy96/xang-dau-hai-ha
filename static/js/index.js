@@ -195,10 +195,9 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     socket.on('mqtt_message', (data) => {
-        console.log("mqtt_message");
-        console.log(data);
+        overiew_data = JSON.parse(data)["tankdata"];
         // update data
-        update_data_table(data);
+        update_data_table();
         // update table
         update_total_value();
     }
