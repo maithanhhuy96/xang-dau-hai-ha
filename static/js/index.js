@@ -173,13 +173,14 @@ function view_detail(row_index){
     }, 500);
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
-    // create socketio receive data mqtt_message
-    const url = `http://${document.domain}:${location.port}`;
-    console.log(url);
-    var socket = io.connect(url);
+    var server_address = 'http://' +document.domain + ':' +location.port;
+
+    var socket = io.connect(server_address);
+
     socket.on('connect', () => {
-        console.log("connected");
+        console.log("connect");
     }
     );
 
@@ -189,11 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     socket.on('mqtt_message', (data) => {
-        console.log('mqtt_message');
-        // temp = JSON.parse(data);
-        // overiew_data = temp.tankdata;
-        console.log(data);
-        console.log(overiew_data);
+        
+        temp = JSON.parse(data);
+        overiew_data = temp.tankdata;
         // update data
         update_data_table();
         // update table
@@ -201,13 +200,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     );
 
-    // recieve data from command : socketio.emit("test", "hello") in python
-    socket.on('test', (data) => {
-        console.log('test');
-        console.log(data);
-        // send data to python
-        socket.emit('test', 'hello');
-    }
-    );
-    // send data to command : socketio.emit("test", "hello") in python
 });
