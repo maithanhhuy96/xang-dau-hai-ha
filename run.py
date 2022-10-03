@@ -19,7 +19,7 @@ import config as cfg
 import pyodbc
 import json
 import datetime
-import time
+import requests
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/foo": {"origins": "*"}})
@@ -69,9 +69,10 @@ def save_image():
 
 @app.route("/tank_history", methods=["POST"])
 def tank_history():
-    from_date = request.form["from_date"]
-    to_date = request.form["to_date"]
-    tankno = request.form["tankno"]
+    data = request.get_json()
+    from_date = data["from_date"]
+    to_date = data["to_date"]
+    tankno = data["tankno"]
     # get data from sql server
     # connect to sql server
     conn = pyodbc.connect(
@@ -101,9 +102,10 @@ def history():
 
 @app.route("/product_history", methods=["POST"])
 def product_history():
-    from_date = request.form["from_date"]
-    to_date = request.form["to_date"]
-    idproduct = request.form["idproduct"]
+    data = request.get_json()
+    from_date = data["from_date"]
+    to_date = data["to_date"]
+    idproduct = data["idproduct"]
     # get data from sql server
     # connect to sql server
     conn = pyodbc.connect(

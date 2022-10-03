@@ -14,10 +14,13 @@ function get_tank_data(){
         // fetch
         fetch("/tank_history", {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({
-                tank: tank,
-                tank_from_date: tank_from_date,
-                tank_to_date: tank_to_date
+                tankno: tank,
+                from_date: tank_from_date,
+                to_date: tank_to_date
             })
         })
         .then(response => response.json())
@@ -66,10 +69,13 @@ function get_product_data(){
         // fetch
         fetch("/product_history", {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify({
-                product: product,
-                product_from_date: product_from_date,
-                product_to_date: product_to_date
+                idproduct: product,
+                from_date: product_from_date,
+                to_date: product_to_date
             })
         })
         .then(response => response.json())
