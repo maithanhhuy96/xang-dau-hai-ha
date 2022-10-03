@@ -173,19 +173,13 @@ function view_detail(row_index){
     }, 500);
 }
 
-// handle socketio event from flask
-// # socketio.emit("mqtt_message", data, namespace="/test")
-// @socketio.on("mqtt_message", namespace="/test")
-// def handle_mqtt_message(message):
-//     print("message received: ", message)
-//     socketio.emit("mqtt_message", message, namespace="/test")
-// import socketio
 document.addEventListener('DOMContentLoaded', () => {
-    var server_address = 'http://' +document.domain + ':' +location.port;
-    var socket = io.connect(server_address);
-
+    // create socketio receive data mqtt_message
+    const url = `http://${document.domain}:${location.port}`;
+    console.log(url);
+    var socket = io.connect(url);
     socket.on('connect', () => {
-        console.log("connect");
+        console.log("connected");
     }
     );
 
@@ -195,9 +189,9 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     socket.on('mqtt_message', (data) => {
-        
-        temp = JSON.parse(data);
-        overiew_data = temp.tankdata;
+        console.log('mqtt_message');
+        // temp = JSON.parse(data);
+        // overiew_data = temp.tankdata;
         console.log(data);
         console.log(overiew_data);
         // update data
@@ -207,4 +201,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     );
 
+    // recieve data from command : socketio.emit("test", "hello") in python
+    socket.on('test', (data) => {
+        console.log('test');
+        console.log(data);
+        // send data to python
+        socket.emit('test', 'hello');
+    }
+    );
+    // send data to command : socketio.emit("test", "hello") in python
 });
