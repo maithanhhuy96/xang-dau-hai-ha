@@ -21,8 +21,12 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
   <link id="pagestyle" href="../static/styles/material-dashboard.css?v=3.0.4" rel="stylesheet" />
+  <!-- for date picker -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- index.js -->
-  <script src="../static/js/index.js"></script>
+  <script src="../static/js/history.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="../static/js/bootstrap.min.js"></script>
   <style>
@@ -85,120 +89,164 @@
     </div>
   </nav>
   <div class="container-fluid py-4">
-    <div class="row">
-      <div class="col-xl-3">
-        <div class="card my-4">
-          <div class="card-body px-0 pb-2">
-            <div class="table-responsive p-0">
-              <img id="map_image" src="../static/images/map/{{image_name}}" alt="Map image" width="100%">
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="row justify-content-center">
       <div class="col-xl-9">
         <div class="card my-4">
           <div class="card-body px-0 pb-2">
             <div class="table-responsive p-0">
+              <!-- create the card and put tank filter and from date to date for show history from db -->
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="tank">Chọn bể</label>
+                        <select class="form-control" id="tank" style="padding-left:20px;">
+                          <option value="">--/--</option>
+                          <option value="1">Bể 1</option>
+                          <option value="2">Bể 2</option>
+                          <option value="3">Bể 3</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="from">From Date</label>
+                        <!-- date and time -->
+                        <input type="datetime-local" class="form-control" id="tank_from_date" style="width:140px;">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="to">To Date</label>
+                        <!-- date and time -->
+                        <input type="datetime-local" class="form-control" id="tank_to_date" style="width:140px;">
+                      </div>
+                    </div>
+                    <!-- create button in middle -->
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <button type="button" onclick="get_tank_data()" class="btn" id="search" style="background-color: #1976d2; color: #fff;">View</button>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              </br>
+
               <table class="table align-items-center mb-0 table-hover">
                 <thead>
                   <tr>
-                    <th class=" text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">TANK NO.
+                    <th class=" text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">Date Time
                     </th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">PRODUCT</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">
-                      LEVEL
-                      <p class="text-xs text-secondary mb-0">mm</p>
+                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">Tank No.</th>
+                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                      Product
                     </th>
                     <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
-                      AVG. TEMP.
-                      <p class="text-xs text-secondary mb-0">°C</p>
+                      Level
                     </th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
-                      DENSITY
-                      <p class="text-xs text-secondary mb-0">Kg/m3</p>
-                    
+                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                      Avg. Temp
                     </th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
-                      VCF
+                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                      Density
                     </th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
                       Gross Volume
-                      <p class="text-xs text-secondary mb-0">m3</p>
                     </th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
                       Net Volume
-                      <p class="text-xxs text-secondary mb-0">m3</p>
                     </th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
                       MASS
-                      <p class="text-xs text-secondary mb-0">tons</p>
                     </th>
                   </tr>
                 </thead>
-                <tbody id="data-table">
+                <tbody id="tank-table">
+                  <!-- create table for show history from db -->
+                  <!-- create empty  -->
+                  <tr>
+                    <td colspan="9" class="text-center">No data</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
-
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-xl-9">
         <div class="card my-4">
           <div class="card-body px-0 pb-2">
             <div class="table-responsive p-0">
-              <!-- row -->
-              <div class="row">
-                <div class="col-md-6">
-                  <!-- create dropdow with option Xăng RON92, Xăng RON95, Dầu DO 0.05S, Xăng E5 RON92 -->
-                  <!-- set middle -->
-                  <div class="form-group" style="padding-top: 5%;">
-                    <label for="exampleFormControlSelect1" class="font-weight-bold" style="padding-right: 20px; padding-left: 40px;">TOTAL per PRODUCT</label>
-                    <select id="total_dropdown" onchange="change_option(this.value)"  style="border-radius:5px;">
-                      <option value="0">Xăng RON92</option>
-                      <option value="1">Xăng RON95</option>
-                      <option value="2">Dầu DO 0.05S</option>
-                      <option value="3">Xăng E5 RON92</option>
-                    </select>
+              <!-- create the card and put tank filter and from date to date for show history from db -->
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="tank">Product</label>
+                        <select class="form-control" id="product">
+                          <option value="0">Xăng RON92</option>
+                          <option value="1">Xăng RON95</option>
+                          <option value="2">Dầu DO 0.05S</option>
+                          <option value="3">Xăng E5 RON92</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="from">From Date</label>
+                        <!-- date and time -->
+                        <input type="datetime-local" class="form-control" id="product_from_date" style="width:140px;">
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="to">To Date</label>
+                        <!-- date and time -->
+                        <input type="datetime-local" class="form-control" id="product_to_date" style="width:140px;">
+                      </div>
+                    </div>
+                    <!-- create button in middle -->
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <button type="button" onclick="get_product_data()" class="btn" id="search" style="background-color: #1976d2; color: #fff;">View</button>
+                      </div>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <table class="table align-items-center mb-0">
-                    <thead>
-                      <tr>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">
-                          Gross Volume
-                          <p class="text-xs text-secondary mb-0">m3</p>
-                        </th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">
-                          Net Volume
-                          <p class="text-xxs text-secondary mb-0">m3</p>
-                        </th>
-                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">
-                          MASS
-                          <p class="text-xs text-secondary mb-0">tons</p>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody id="total-table">
-                      <tr>
-                        <td class="align-middle text-center text-sm">
-                          <span class="text-secondary text-sm font-weight-bold">0.000</span>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                          <span class="text-secondary text-sm font-weight-bold">0.000</span>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                          <span class="text-secondary text-sm font-weight-bold">0.000</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
               </div>
+
+              <table class="table align-items-center mb-0 table-hover">
+                <thead>
+                  <tr>
+                    <th class=" text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">Date Time
+                    </th>
+                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">Product</th>
+                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                      Total Gross Volume
+                    </th>
+                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                      Total Net Volume
+                    </th>
+                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                      Total MASS
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="product-table">
+                  <!-- create table for show history from db -->
+                  <!-- create empty  -->
+                  <tr>
+                    <td colspan="5" class="text-center">No data</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
-      
     </div>
   </div>
 
@@ -256,7 +304,7 @@
                 </tr>
                 <tr>
                   <th class="text-center text-secondary text-xxs font-weight-bolder">
-                    <span class="text-secondary text-sm font-weight-bold">Avg. Temp[°C]</span>
+                    <span class="text-secondary text-sm font-weight-bold">Avg. Temp[oC]</span>
                   </th>
                   <td class="align-middle text-center text-sm">
                     <span id="avgtemp" class="text-secondary text-sm font-weight-bold">xxx</span>

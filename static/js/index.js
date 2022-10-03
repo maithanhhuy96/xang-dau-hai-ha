@@ -85,7 +85,7 @@ function update_data_table() {
         var avgtemp = row.insertCell(3);
         avgtemp.className = "align-middle text-center text-sm";
         // convert to float with 2 decimal places
-        avgtemp.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].avgtemp).toFixed(2) + '</span></td>';
+        avgtemp.innerHTML = '<td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-success">' + parseFloat(overiew_data[i].avgtemp).toFixed(2) + '</span></td>';
         var density = row.insertCell(4);
         density.className = "align-middle text-center text-sm";
         // 1 decimal place
@@ -201,5 +201,5 @@ document.addEventListener('DOMContentLoaded', () => {
         update_data(data);
     }
     );
-    
+
 });

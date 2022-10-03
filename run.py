@@ -67,57 +67,65 @@ def save_image():
     image.save(os.path.join("static/images/map", secure_filename(image.filename)))
     return {"status": "ok", "image_name": image.filename}
 
-@app.route("/history", methods=["GET"])
-def history():
+@app.route("/tank_history", methods=["POST"])
+def tank_history():
+    from_date = request.form["from_date"]
+    to_date = request.form["to_date"]
+    tankno = request.form["tankno"]
     # get data from sql server
     # connect to sql server
     conn = pyodbc.connect(
         "Driver={SQL Server};"
-        "Server={};"
-        "Database={};".format(cfg.server_name, cfg.database),
+        f"Server={cfg.server_name};"
+        f"Database={cfg.database};"
     )
     cursor = conn.cursor()
     # get data from sql server
-    # select 10 rows from table
     cursor.execute(
-        "SELECT TOP 10 * FROM {} ORDER BY ID DESC".format(cfg.table_tank)
+        f"SELECT * FROM {cfg.table_tank} WHERE storedate >= '{from_date}' AND storedate <= '{to_date}' AND tankno = '{tankno}' ORDER BY storedate DESC"
     )
-    rows = cursor.fetchall()
-    # close connection
-    conn.close()
-    # convert data to json
-    data = []
-    for row in rows:
-        data.append(
-            {
-                "id": row[0],
-                "time": row[1].strftime("%Y-%m-%d %H:%M:%S"),
-                "level": row[2],
-                "volume": row[3],
-                "temperature": row[4],
-                "density": row[5],
-            }
-        )
-    # return render_template("history.html", data=data)
-    sql = "SELECT TOP 10 * FROM {} ORDER BY storedate".format(cfg.table_tank)
-    cursor.execute(sql)
     column = [column[0] for column in cursor.description]
     rows = cursor.fetchall()
     tank_data = []
     for row in rows:
         tank_data.append(dict(zip(column, row)))
     print(tank_data)
+    return {
+        "status": "ok",
+        "data": tank_data
+    }
+
+@app.route("/history", methods=["GET"])
+def history():
+    return render_template("history.html")
+
+@app.route("/product_history", methods=["POST"])
+def product_history():
+    from_date = request.form["from_date"]
+    to_date = request.form["to_date"]
+    idproduct = request.form["idproduct"]
     # get data from sql server
-    sql = "SELECT TOP 10 * FROM {} ORDER BY storedate".format(cfg.table_product)
-    cursor.execute(sql)
+    # connect to sql server
+    conn = pyodbc.connect(
+        "Driver={SQL Server};"
+        f"Server={cfg.server_name};"
+        f"Database={cfg.database};"
+    )
+    cursor = conn.cursor()
+    # get data from sql server
+    cursor.execute(
+        f"SELECT * FROM {cfg.table_product} WHERE storedate >= '{from_date}' AND storedate <= '{to_date}' AND idproduct = '{idproduct}' ORDER BY storedate DESC"
+    )
     column = [column[0] for column in cursor.description]
-    rows1 = cursor.fetchall()
+    rows = cursor.fetchall()
     product_data = []
-    for row in rows1:
+    for row in rows:
         product_data.append(dict(zip(column, row)))
     print(product_data)
-    return "ok"
-
+    return {
+        "status": "ok",
+        "data": product_data
+    }
 
 # socketio.emit("mqtt_message", data, namespace="/test")
 @socketio.on("mqtt_message", namespace="/test")
