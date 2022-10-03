@@ -33,15 +33,15 @@ function get_tank_data(){
             for (var i = 0; i < data.length; i++) {
                 var row = data[i];
                 var row_html = "<tr>";
-                row_html += "<td>" + row["storedata"] + "</td>";
-                row_html += "<td>" + row["tankno"] + "</td>";
-                row_html += "<td>" + row["product"] + "</td>";
-                row_html += "<td>" + row["level"] + "</td>";
-                row_html += "<td>" + row["avgtemp"] + "</td>";
-                row_html += "<td>" + row["density"] + "</td>";
-                row_html += "<td>" + row["grossvolume"] + "</td>";
-                row_html += "<td>" + row["netvolume"] + "</td>";
-                row_html += "<td>" + row["mass"] + "</td>";
+                row_html += "<td class='text-center'>" + row["storedata"] + "</td>";
+                row_html += "<td class='text-center'>" + row["tankno"] + "</td>";
+                row_html += "<td class='text-center'>" + row["product"] + "</td>";
+                row_html += "<td class='text-center'>" + row["level"] + "</td>";
+                row_html += "<td class='text-center'>" + row["avgtemp"] + "</td>";
+                row_html += "<td class='text-center'>" + row["density"] + "</td>";
+                row_html += "<td class='text-center'>" + row["grossvolume"] + "</td>";
+                row_html += "<td class='text-center'>" + row["netvolume"] + "</td>";
+                row_html += "<td class='text-center'>" + row["mass"] + "</td>";
                 row_html += "</tr>";
                 table_body.innerHTML += row_html;
             }
@@ -87,11 +87,11 @@ function get_product_data(){
             for (var i = 0; i < data.length; i++) {
                 var row = data[i];
                 var row_html = "<tr>";
-                row_html += "<td>" + row["storedata"] + "</td>";
-                row_html += "<td>" + row["product"] + "</td>";
-                row_html += "<td>" + row["totalgrossvolume"] + "</td>";
-                row_html += "<td>" + row["totalnetvolume"] + "</td>";
-                row_html += "<td>" + row["totalmass"] + "</td>";
+                row_html += "<td class='text-center'>" + row["storedata"] + "</td>";
+                row_html += "<td class='text-center'>" + row["product"] + "</td>";
+                row_html += "<td class='text-center'>" + row["totalgrossvolume"] + "</td>";
+                row_html += "<td class='text-center'>" + row["totalnetvolume"] + "</td>";
+                row_html += "<td class='text-center'>" + row["totalmass"] + "</td>";
                 row_html += "</tr>";
                 table_body.innerHTML += row_html;
             }

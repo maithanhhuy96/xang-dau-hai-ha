@@ -198,7 +198,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("mqtt_message");
         console.log(data);
         // update data
-        update_data(data);
+        update_data_table(data);
+        // update table
+        update_total_value();
     }
     );
 

@@ -89,7 +89,9 @@ def tank_history():
     rows = cursor.fetchall()
     tank_data = []
     for row in rows:
-        tank_data.append(dict(zip(column, row)))
+        temp=dict(zip(column, row))
+        temp["storedate"] = temp["storedate"].strftime("%Y-%m-%d %H:%M:%S")
+        tank_data.append(temp)
     print(tank_data)
     return {
         "status": "ok",
@@ -122,7 +124,10 @@ def product_history():
     rows = cursor.fetchall()
     product_data = []
     for row in rows:
-        product_data.append(dict(zip(column, row)))
+        temp=dict(zip(column, row))
+        temp["storedate"]=temp["storedate"].strftime("%Y-%m-%d %H:%M:%S")
+        product_data.append(temp)
+
     print(product_data)
     return {
         "status": "ok",
@@ -133,9 +138,9 @@ def product_history():
 @socketio.on("mqtt_message", namespace="/test")
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def handle_mqtt_message(message):
-    print("ldsfajlkd")
     print("message received socket: ", message)
-    socketio.emit("mqtt_message", message, namespace="/test")
+    data = message["tank_data"]
+    socketio.emit("mqtt_message", data, namespace="/test")
 
 
 @mqtt.on_connect()
