@@ -1,3 +1,6 @@
+
+flag = false
+var gauge1;
 var overiew_data = [
     {
         "tankno":"1",
@@ -77,35 +80,35 @@ function update_data_table() {
         tankno.className = "align-middle text-center text-sm";
         tankno.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + overiew_data[i].tankno + '</span></td>';
         var product = row.insertCell(1);
-        product.className = "align-middle text-center text-sm";
-        product.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + overiew_data[i].product + '</span></td>';
+        product.className = "align-middle text-start text-sm";
+        product.innerHTML = '<td class="align-middle text-start text-sm"><span class="text-secondary text-sm font-weight-bold">' + overiew_data[i].product + '</span></td>';
         var level = row.insertCell(2);
-        level.className = "align-middle text-center text-sm";
-        level.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + overiew_data[i].level + '</span></td>';
+        level.className = "align-middle text-end text-sm";
+        level.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + overiew_data[i].level + '</span></td>';
         var avgtemp = row.insertCell(3);
-        avgtemp.className = "align-middle text-center text-sm";
+        avgtemp.className = "align-middle text-end text-sm";
         // convert to float with 2 decimal places
-        avgtemp.innerHTML = '<td class="align-middle text-center text-sm"><span class="badge badge-sm bg-gradient-success">' + parseFloat(overiew_data[i].avgtemp).toFixed(2) + '</span></td>';
+        avgtemp.innerHTML = '<td class="align-middle text-end text-sm"><span class="badge badge-sm bg-gradient-success">' + parseFloat(overiew_data[i].avgtemp).toFixed(2) + '</span></td>';
         var density = row.insertCell(4);
-        density.className = "align-middle text-center text-sm";
+        density.className = "align-middle text-end text-sm";
         // 1 decimal place
-        density.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].density).toFixed(1) + '</span></td>';
+        density.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].density).toFixed(1) + '</span></td>';
         var vcf = row.insertCell(5);
-        vcf.className = "align-middle text-center text-sm";
+        vcf.className = "align-middle text-end text-sm";
         // 1 decimal place not round
-        vcf.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].vcf).toFixed(1) + '</span></td>';
+        vcf.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].vcf).toFixed(1) + '</span></td>';
         var grossvolume = row.insertCell(6);
-        grossvolume.className = "align-middle text-center text-sm";
+        grossvolume.className = "align-middle text-end text-sm";
         // 3 decimal places
-        grossvolume.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].grossvolume).toFixed(3) + '</span></td>';
+        grossvolume.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].grossvolume).toFixed(3) + '</span></td>';
         var netvolume = row.insertCell(7);
-        netvolume.className = "align-middle text-center text-sm";
+        netvolume.className = "align-middle text-end text-sm";
         // 3 decimal places
-        netvolume.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].netvolume).toFixed(3) + '</span></td>';
+        netvolume.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].netvolume).toFixed(3) + '</span></td>';
         var mass = row.insertCell(8);
-        mass.className = "align-middle text-center text-sm";
+        mass.className = "align-middle text-end text-sm";
         // 3 decimal places
-        mass.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].mass).toFixed(3) + '</span></td>';
+        mass.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].mass).toFixed(3) + '</span></td>';
     }
 }
 
@@ -140,37 +143,65 @@ function update_total_value(){
 }
 
 function view_detail(row_index){
-    console.log("view detail of row " + row_index);
-    // put value to modal
-    var tankno = document.getElementById("tankno");
-    tankno.innerHTML = "TANK "+overiew_data[row_index-1].tankno;
-    var product = document.getElementById("product");
-    product.innerHTML = overiew_data[row_index-1].product;
-    var level = document.getElementById("level");
-    level.innerHTML = overiew_data[row_index-1].level;
-    var avgtemp = document.getElementById("avgtemp");
-    avgtemp.innerHTML = overiew_data[row_index-1].avgtemp;
-    var density = document.getElementById("density");
-    density.innerHTML = overiew_data[row_index-1].density;
-    var vcf = document.getElementById("vcf");
-    vcf.innerHTML = overiew_data[row_index-1].vcf;
-    var grossvolume = document.getElementById("grossvolume");
-    grossvolume.innerHTML = overiew_data[row_index-1].grossvolume;
-    var netvolume = document.getElementById("netvolume");
-    netvolume.innerHTML = overiew_data[row_index-1].netvolume;
-    var mass = document.getElementById("mass");
-    mass.innerHTML = overiew_data[row_index-1].mass;
     $('#modal').modal('show');
-    // settimout
-    setTimeout(function(){
-        var width = document.getElementById("tank_image").offsetWidth;
-        var height = document.getElementById("tank_image").offsetHeight;
-        // 
-        var level_image = document.getElementById("level_image");
-        // set 40% of width
-        level_image.style.width = width * 0.15 + "px";
-        level_image.style.height = height * 0.678 + "px";
-    }, 500);
+    if (flag==false){
+        gauge1 = loadLiquidFillGauge("fillgauge1", 0);
+        var config1 = liquidFillGaugeDefaultSettings();
+        config1.circleColor = "#FF7777";
+        config1.textColor = "#FF4444";
+        config1.waveTextColor = "#FFAAAA";
+        config1.waveColor = "#FFDDDD";
+        config1.circleThickness = 0.2;
+        config1.textVertPosition = 0.2;
+        config1.waveAnimateTime = 1000;
+        flag = true;
+    }
+    // send fetch request to get detail data
+    fetch('/get_max', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                tankno: overiew_data[row_index].tankno
+                })
+            })
+    .then(response => response.json())
+    .then(data => {
+        data = data.data;
+        maxv = data.maxv;
+        maxh = data.maxh;
+        // put value to modal
+        document.getElementById("maxhight").innerHTML = maxh;
+        document.getElementById("maxvolume").innerHTML = maxv;
+        var tankno = document.getElementById("tankno");
+        tankno.innerHTML = "TANK "+overiew_data[row_index-1].tankno;
+        var product = document.getElementById("product");
+        product.innerHTML = overiew_data[row_index-1].product;
+        var level = document.getElementById("level");
+        level.innerHTML = overiew_data[row_index-1].level;
+        var avgtemp = document.getElementById("avgtemp");
+        avgtemp.innerHTML = overiew_data[row_index-1].avgtemp;
+        var density = document.getElementById("density");
+        density.innerHTML = overiew_data[row_index-1].density;
+        var vcf = document.getElementById("vcf");
+        vcf.innerHTML = overiew_data[row_index-1].vcf;
+        var grossvolume = document.getElementById("grossvolume");
+        grossvolume.innerHTML = overiew_data[row_index-1].grossvolume;
+        var netvolume = document.getElementById("netvolume");
+        netvolume.innerHTML = overiew_data[row_index-1].netvolume;
+        var mass = document.getElementById("mass");
+        mass.innerHTML = overiew_data[row_index-1].mass;
+
+        
+        level_text = level.innerHTML;
+        percent = parseFloat(overiew_data[row_index-1].level)/19000*100;
+        // round
+        percent = Math.round(percent);
+        gauge1.update(percent,level_text);
+    });
+    
+    
 }
 
 

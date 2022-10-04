@@ -14,6 +14,7 @@
   <!-- Nucleo Icons -->
   <link href="../static/styles/nucleo-icons.css" rel="stylesheet" />
   <link href="../static/styles/nucleo-svg.css" rel="stylesheet" />
+  <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
@@ -25,6 +26,7 @@
   <script src="../static/js/index.js"></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="../static/js/bootstrap.min.js"></script>
+  <script src="../static/js/liquip.js"></script>
   <style>
     /* set color for th table */
     .table th {
@@ -80,6 +82,7 @@
     </div>
   </nav>
   <div class="container-fluid py-4">
+    
     <div class="row">
       <div class="col-xl-3">
         <div class="card my-4">
@@ -97,32 +100,38 @@
               <table class="table align-items-center mb-0 table-hover">
                 <thead>
                   <tr>
-                    <th class=" text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">TANK NO.
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                      TANK NO.
+                      <p class="text-xs text-secondary mb-0">&nbsp;</p>
                     </th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">PRODUCT</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                      PRODUCT
+                      <p class="text-xs text-secondary mb-0">&nbsp;</p>
+                    </th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
                       LEVEL
                       <p class="text-xs text-secondary mb-0">mm</p>
                     </th>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
                       AVG. TEMP.
-                      <p class="text-xs text-secondary mb-0">°C</p>
+                      <p class="text-xs text-secondary mb-0">mm</p>
                     </th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
                       DENSITY
                       <p class="text-xs text-secondary mb-0">Kg/m3</p>
-                    
                     </th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
                       VCF
+                      <p class="text-xs text-secondary mb-0">&nbsp;</p>
                     </th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
                       Gross Volume
                       <p class="text-xs text-secondary mb-0">m3</p>
                     </th>
+                    
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
                       Net Volume
-                      <p class="text-xxs text-secondary mb-0">m3</p>
+                      <p class="text-xs text-secondary mb-0">m3</p>
                     </th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
                       MASS
@@ -210,9 +219,11 @@
               <!-- create dropdow with option Xăng RON92, Xăng RON95, Dầu DO 0.05S, Xăng E5 RON92 -->
               <!-- set middle -->
               <div class="form-group" id="tank_image" style="background-image: url('../static/images/core/tank.jpg');background-size: contain; height: 100%;background-repeat:no-repeat;">
-                <div id="level_image" style="background-color: #fff; position: relative; top: 60%; left: 65%; transform: translate(-50%, -50%);">
+                <!-- <div id="level_image" style="background-color: #fff; position: relative; top: 60%; left: 65%; transform: translate(-50%, -50%);">
                   <div style="color: #3d15e4; position: relative; top: 0; left: 0; width: 100%; height: 50%;z-index: 0; text-align: center;">0.000</div>
-                </div>
+                </div> -->
+                <svg id="fillgauge1" width="97%" height="250" style="margin-top: 153px;" onclick="gauge1.update(NewValue());"></svg>
+
               </div>
             </div>
             <div class="col-md-4">

@@ -87,7 +87,7 @@
   </nav>
   <div class="container-fluid py-4">
     <div class="row justify-content-center">
-      <div class="col-xl-9">
+      <div class="col-xl-11">
         <div class="card my-4">
           <div class="card-body px-0 pb-2">
             <div class="table-responsive p-0">
@@ -100,16 +100,10 @@
                         <label for="tank">Tank</label>
                         <select class="form-control" id="tank">
                           <option value="">--/--</option>
-                          <option value="1">Tank 1</option>
-                          <option value="2">Tank 2</option>
-                          <option value="3">Tank 3</option>
-                          <option value="4">Tank 4</option>
-                          <option value="5">Tank 5</option>
-                          <option value="6">Tank 6</option>
-                          <option value="7">Tank 7</option>
-                          <option value="8">Tank 8</option>
-                          <option value="9">Tank 9</option>
-                          <option value="10">Tank 10</option>
+                          {% for i in range(1, page_config.tank_number+1) %}
+                          <option value="{{i}}">Tank {{i}}</option>
+                          {% endfor %}
+                          
                         </select>
                       </div>
                     </div>
@@ -146,28 +140,31 @@
               <table id="tanktable" class="table align-items-center mb-0 table-hover">
                 <thead>
                   <tr>
-                    <th class=" text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">Date Time
+                    <th class=" text-secondary text-xxs font-weight-bolder">Date Time
                     </th>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">Tank No.</th>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                    <th class="text-center text-secondary text-xxs font-weight-bolder">Tank No.</th>
+                    <th class="text-center text-secondary text-xxs font-weight-bolder">
                       Product
                     </th>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                    <th class="text-center text-secondary text-xxs font-weight-bolder">
                       Level
                     </th>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                    <th class="text-center text-secondary text-xxs font-weight-bolder">
                       Avg. Temp
                     </th>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                    <th class="text-center text-secondary text-xxs font-weight-bolder">
                       Density
                     </th>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                    <th class="text-center text-secondary text-xxs font-weight-bolder">
+                      VCF
+                    </th>
+                    <th class="text-center text-secondary text-xxs font-weight-bolder">
                       Gross Volume
                     </th>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                    <th class="text-center text-secondary text-xxs font-weight-bolder">
                       Net Volume
                     </th>
-                    <th class="text-center text-secondary text-xxs font-weight-bolder" style="padding-top: 0;">
+                    <th class="text-center text-secondary text-xxs font-weight-bolder">
                       MASS
                     </th>
                   </tr>
@@ -186,7 +183,7 @@
       </div>
     </div>
     <div class="row justify-content-center">
-      <div class="col-xl-9">
+      <div class="col-xl-11">
         <div class="card my-4">
           <div class="card-body px-0 pb-2">
             <div class="table-responsive p-0">

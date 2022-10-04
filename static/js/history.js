@@ -39,6 +39,7 @@ function get_tank_data(){
                 row_html += "<td class='text-center'>" + row["level"] + "</td>";
                 row_html += "<td class='text-center'>" + row["avgtemp"] + "</td>";
                 row_html += "<td class='text-center'>" + row["density"] + "</td>";
+                row_html += "<td class='text-center'>" + row["vcf"] + "</td>";
                 row_html += "<td class='text-center'>" + row["grossvolume"] + "</td>";
                 row_html += "<td class='text-center'>" + row["netvolume"] + "</td>";
                 row_html += "<td class='text-center'>" + row["mass"] + "</td>";

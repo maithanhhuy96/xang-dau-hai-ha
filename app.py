@@ -10,37 +10,41 @@ import os
 from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
 from flask_cors import CORS, cross_origin
-import config as cfg
 import pyodbc
 from flask_bootstrap import Bootstrap
+import configparser
 
+config = configparser.ConfigParser()
+config.read('config.txt')
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/foo": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config["MQTT_BROKER_URL"] = cfg.mqtt_url
-app.config["MQTT_BROKER_PORT"] = cfg.mqtt_port
-app.config["MQTT_USERNAME"] = cfg.mqtt_username
-app.config["MQTT_PASSWORD"] = cfg.mqtt_password
+app.config["MQTT_BROKER_URL"] = config["mqtt_config"]["mqtt_url"]
+app.config["MQTT_BROKER_PORT"] = int(config["mqtt_config"]["mqtt_port"])
+app.config["MQTT_USERNAME"] = config["mqtt_config"]["mqtt_username"]
+app.config["MQTT_PASSWORD"] = config["mqtt_config"]["mqtt_password"]
 app.config["MQTT_KEEPALIVE"] = 5
 app.config["MQTT_TLS_ENABLED"] = False
-app.config["MQTT_LAST_WILL_TOPIC"] = cfg.mqtt_topic
+app.config["MQTT_LAST_WILL_TOPIC"] = config["mqtt_config"]["mqtt_topic"]
 socketio = SocketIO(app)
 
 bootstrap = Bootstrap(app)
 mqtt = Mqtt(app)
 
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
-page_config = {
-    "title": cfg.title,
-    "name": cfg.name,
-    "tank_number": cfg.tank_number,
-}
+
 
 @app.route("/")
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def index():
+    config.read('config.txt')
+    page_config = {
+        "title": config["page_settings"]["title"],
+        "name": config["page_settings"]["name"],
+        "tank_number": int(config["history_settings"]["tank_number"]),
+    }
     # get the first image name from static/images
     image_names = os.listdir("static/images/map")
     if len(image_names) > 0:
@@ -62,8 +66,31 @@ def index():
 #     image.save(os.path.join("static/images/map", secure_filename(image.filename)))
 #     return {"status": "ok", "image_name": image.filename}
 
+@app.route("/get_max", methods=["POST"])
+def get_max():
+    data = request.get_json()
+    tankid = data["tankno"]
+    # get maxh, maxv based on tankid from quangtriconfig db, tankdata table
+    # connect to db
+    conn = pyodbc.connect(
+        "DRIVER={SQL Server};SERVER=" + config["sql_config"]["server_name"] + ";DATABASE=" + config["sql_config"]["database"] + ";UID=" + config["sql_config"]["user"] + ";PWD=" + config["sql_config"]["password"]
+    )
+    cursor = conn.cursor()
+    # get maxh, maxv
+    cursor.execute("SELECT maxh, maxv FROM " + config["sql_config"]["table_quangtriconfig"] + " WHERE tankid = " + tankid)
+    row = cursor.fetchone()
+    maxh = row[0]
+    maxv = row[1]
+    return {"status": "ok", "data": {"maxh": maxh, "maxv": maxv}}
+
 @app.route("/tank_history", methods=["POST"])
 def tank_history():
+    config.read('config.txt')
+    server_name = config["sql_config"]["server_name"]
+    user = config["sql_config"]["user"]
+    password = config["sql_config"]["password"]
+    database = config["sql_config"]["database"]
+    table_tank = config["sql_config"]["table_tank"]
     data = request.get_json()
     from_date = data["from_date"]
     to_date = data["to_date"]
@@ -72,13 +99,13 @@ def tank_history():
     # connect to sql server
     conn = pyodbc.connect(
         "Driver={SQL Server};"
-        f"Server={cfg.server_name};"
-        f"Database={cfg.database};"
+        f"Server={server_name};"
+        f"Database={database};"
     )
     cursor = conn.cursor()
     # get data from sql server
     cursor.execute(
-        f"SELECT * FROM {cfg.table_tank} WHERE storedate >= '{from_date}' AND storedate <= '{to_date}' AND tankno = '{tankno}' ORDER BY storedate DESC"
+        f"SELECT * FROM {table_tank} WHERE storedate >= '{from_date}' AND storedate <= '{to_date}' AND tankno = '{tankno}' ORDER BY storedate DESC"
     )
     column = [column[0] for column in cursor.description]
     rows = cursor.fetchall()
@@ -94,10 +121,22 @@ def tank_history():
 
 @app.route("/history", methods=["GET"])
 def history():
+    config.read('config.txt')
+    page_config = {
+        "title": config["page_settings"]["title"],
+        "name": config["page_settings"]["name"],
+        "tank_number": int(config["history_settings"]["tank_number"]),
+    }
     return render_template("history.html", page_config=page_config)
 
 @app.route("/product_history", methods=["POST"])
 def product_history():
+    config.read('config.txt')
+    server_name = config["sql_config"]["server_name"]
+    user = config["sql_config"]["user"]
+    password = config["sql_config"]["password"]
+    database = config["sql_config"]["database"]
+    table_product = config["sql_config"]["table_product"]
     data = request.get_json()
     from_date = data["from_date"]
     to_date = data["to_date"]
@@ -106,13 +145,13 @@ def product_history():
     # connect to sql server
     conn = pyodbc.connect(
         "Driver={SQL Server};"
-        f"Server={cfg.server_name};"
-        f"Database={cfg.database};"
+        f"Server={server_name};"
+        f"Database={database};"
     )
     cursor = conn.cursor()
     # get data from sql server
     cursor.execute(
-        f"SELECT * FROM {cfg.table_product} WHERE storedate >= '{from_date}' AND storedate <= '{to_date}' AND idproduct = '{idproduct}' ORDER BY storedate DESC"
+        f"SELECT * FROM {table_product} WHERE storedate >= '{from_date}' AND storedate <= '{to_date}' AND idproduct = '{idproduct}' ORDER BY storedate DESC"
     )
     column = [column[0] for column in cursor.description]
     rows = cursor.fetchall()
