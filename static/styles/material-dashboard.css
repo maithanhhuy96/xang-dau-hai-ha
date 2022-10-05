@@ -25862,6 +25862,9 @@ p,
 .text-xs {
   font-size: 0.75rem !important;
 }
+.text-xs-custom {
+  font-size: 0.85rem !important;
+}
 
 .text-xxs {
   font-size: 0.95rem !important;

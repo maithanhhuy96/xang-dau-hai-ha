@@ -4,6 +4,9 @@ from flask import (
     Flask,
     render_template,
     request,
+    redirect,
+    url_for,
+    session,
 )
 from werkzeug.utils import secure_filename
 import os
@@ -33,12 +36,49 @@ socketio = SocketIO(app)
 bootstrap = Bootstrap(app)
 mqtt = Mqtt(app)
 
+# setting for session
+app.secret_key = "secret_key"
+
+
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
 
+# create to check require login
+def is_login():
+    if "username" in session:
+        return True
+    else:
+        return False
+
+# Route for handling the login page logic
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        data = request.get_json()
+        # read username and password from config.txt
+        config.read('config.txt')
+        username = config["login_config"]["username"]
+        password = config["login_config"]["password"]
+        if data['username'] == username and data['password'] == password:
+            # add username to session
+            session["username"] = data['username']
+            return {'message': 'Login success', 'status': 200}
+        else:
+            return {'message': 'Invalid username or password', 'status': 401}
+            
+    else:
+        return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.pop("username", None)
+    return redirect(url_for('login'))
 
 @app.route("/")
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def index():
+    # if not login go to login page
+    if not is_login():
+        return redirect(url_for("login"))
     config.read('config.txt')
     page_config = {
         "title": config["page_settings"]["title"],
@@ -54,18 +94,6 @@ def index():
     return render_template("index.html", image_name=first_image_name, page_config=page_config)
 
 
-# @app.route("/save_image", methods=["POST"])
-# def save_image():
-#     # save image to static/images
-#     # from ImmutableMultiDict([('image', <FileStorage: 'image.png' ('image/png')>)])
-#     image = request.files["image"]
-#     # delete all images in static/images
-#     for file in os.listdir("static/images/map"):
-#         os.remove(os.path.join("static/images/map", file))
-#     # save image to static/images
-#     image.save(os.path.join("static/images/map", secure_filename(image.filename)))
-#     return {"status": "ok", "image_name": image.filename}
-
 @app.route("/get_max", methods=["POST"])
 def get_max():
     data = request.get_json()
@@ -73,11 +101,11 @@ def get_max():
     # get maxh, maxv based on tankid from quangtriconfig db, tankdata table
     # connect to db
     conn = pyodbc.connect(
-        "DRIVER={SQL Server};SERVER=" + config["sql_config"]["server_name"] + ";DATABASE=" + config["sql_config"]["database"] + ";UID=" + config["sql_config"]["user"] + ";PWD=" + config["sql_config"]["password"]
+        "DRIVER={SQL Server};SERVER=" + config["sql_config"]["server_name"] + ";DATABASE=quangtriconfig;UID=" + config["sql_config"]["user"] + ";PWD=" + config["sql_config"]["password"]
     )
     cursor = conn.cursor()
     # get maxh, maxv
-    cursor.execute("SELECT maxh, maxv FROM " + config["sql_config"]["table_quangtriconfig"] + " WHERE tankid = " + tankid)
+    cursor.execute("SELECT maxh, maxv FROM tankdata WHERE tankid = " + tankid)
     row = cursor.fetchone()
     maxh = row[0]
     maxv = row[1]
@@ -121,6 +149,8 @@ def tank_history():
 
 @app.route("/history", methods=["GET"])
 def history():
+    if not is_login():
+        return redirect(url_for("login"))
     config.read('config.txt')
     page_config = {
         "title": config["page_settings"]["title"],
@@ -185,4 +215,4 @@ def handle_mqtt_message(client, userdata, message):
     socketio.emit("mqtt_message", message.payload.decode())
 
 if __name__ == '__main__':
-   socketio.run(app, host='0.0.0.0', port=4000, use_reloader=False)
+   socketio.run(app, host='127.0.0.1', port=4000, use_reloader=False, debug=True)

@@ -1,3 +1,7 @@
+[login_config]
+username=haiha
+password=haiha@123
+
 [page_settings]
 title = Tank Monitor
 name = KHO XĂNG DẦU HẢI HÀ - QUẢNG TRỊ

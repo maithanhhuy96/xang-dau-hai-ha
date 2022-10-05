@@ -162,7 +162,7 @@ function loadLiquidFillGauge(elementId, value, config) {
     if(config.valueCountUp){
         var textTween = function(){
             var i = d3.interpolate(this.textContent, textFinalValue);
-            return function(t) { this.textContent = "1234" + percentText; }
+            return function(t) { this.textContent = "0" ; }
         };
         text1.transition()
             .duration(config.waveRiseTime)

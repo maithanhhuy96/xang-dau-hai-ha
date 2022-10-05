@@ -83,30 +83,31 @@ function update_data_table() {
         product.className = "align-middle text-start text-sm";
         product.innerHTML = '<td class="align-middle text-start text-sm"><span class="text-secondary text-sm font-weight-bold">' + overiew_data[i].product + '</span></td>';
         var level = row.insertCell(2);
-        level.className = "align-middle text-end text-sm";
+        level.className = "align-middle text-center text-end text-sm";
         level.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + overiew_data[i].level + '</span></td>';
         var avgtemp = row.insertCell(3);
-        avgtemp.className = "align-middle text-end text-sm";
+        avgtemp.className = "align-middle text-center text-end text-sm";
         // convert to float with 2 decimal places
         avgtemp.innerHTML = '<td class="align-middle text-end text-sm"><span class="badge badge-sm bg-gradient-success">' + parseFloat(overiew_data[i].avgtemp).toFixed(2) + '</span></td>';
         var density = row.insertCell(4);
-        density.className = "align-middle text-end text-sm";
+        density.className = "align-middle text-center text-end text-sm";
         // 1 decimal place
         density.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].density).toFixed(1) + '</span></td>';
         var vcf = row.insertCell(5);
-        vcf.className = "align-middle text-end text-sm";
-        // 1 decimal place not round
-        vcf.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].vcf).toFixed(1) + '</span></td>';
+		vcf.className = "align-middle text-center text-end text-sm";
+        // 1 decimal place
+        vcf.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].vcf).toFixed(4) + '</span></td>';
+        
         var grossvolume = row.insertCell(6);
-        grossvolume.className = "align-middle text-end text-sm";
+        grossvolume.className = "align-middle text-center text-end text-sm";
         // 3 decimal places
         grossvolume.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].grossvolume).toFixed(3) + '</span></td>';
         var netvolume = row.insertCell(7);
-        netvolume.className = "align-middle text-end text-sm";
+        netvolume.className = "align-middle text-center text-end text-sm";
         // 3 decimal places
         netvolume.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].netvolume).toFixed(3) + '</span></td>';
         var mass = row.insertCell(8);
-        mass.className = "align-middle text-end text-sm";
+        mass.className = "align-middle text-center text-end text-sm";
         // 3 decimal places
         mass.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].mass).toFixed(3) + '</span></td>';
     }
@@ -144,7 +145,9 @@ function update_total_value(){
 
 function view_detail(row_index){
     $('#modal').modal('show');
+	console.log(row_index);
     if (flag==false){
+		setTimeout(function(){
         gauge1 = loadLiquidFillGauge("fillgauge1", 0);
         var config1 = liquidFillGaugeDefaultSettings();
         config1.circleColor = "#FF7777";
@@ -155,6 +158,7 @@ function view_detail(row_index){
         config1.textVertPosition = 0.2;
         config1.waveAnimateTime = 1000;
         flag = true;
+		},500);
     }
     // send fetch request to get detail data
     fetch('/get_max', {
@@ -163,7 +167,7 @@ function view_detail(row_index){
             'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                tankno: overiew_data[row_index].tankno
+                tankno: overiew_data[row_index-1].tankno
                 })
             })
     .then(response => response.json())
