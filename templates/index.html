@@ -157,11 +157,11 @@
           <div class="card-body px-0 pb-2">
             <div class="table-responsive p-0">
               <!-- row -->
-              <div class="row">
-                <div class="col-md-6">
+              <div class="row" style="display: flex;">
+                <div class="col-md-7">
                   <!-- create dropdow with option Xăng RON92, Xăng RON95, Dầu DO 0.05S, Xăng E5 RON92 -->
                   <!-- set middle -->
-                  <div class="form-group" style="padding-top: 5%;">
+                  <div class="form-group">
                     <label for="exampleFormControlSelect1" class="font-weight-bold" style="padding-right: 20px; padding-left: 40px;">TOTAL per PRODUCT</label>
                     <select id="total_dropdown" onchange="change_option(this.value)"  style="border-radius:5px;">
                       <option value="0">Xăng RON92</option>
@@ -171,39 +171,12 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-md-6">
-                  <table class="table align-items-center mb-0">
-                    <thead>
-                      <tr>
-                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder">
-                          Gross Volume
-                          <p class="text-xs text-secondary mb-0">m3</p>
-                        </th>
-                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder">
-                          Net Volume
-                          <p class="text-xs text-secondary mb-0">m3</p>
-                        </th>
-                        <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder">
-                          MASS
-                          <p class="text-xs text-secondary mb-0">tons</p>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody id="total-table">
-                      <tr>
-                        <td class="align-middle text-center text-sm">
-                          <span class="text-secondary text-sm font-weight-bold">0.000</span>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                          <span class="text-secondary text-sm font-weight-bold">0.000</span>
-                        </td>
-                        <td class="align-middle text-center text-sm">
-                          <span class="text-secondary text-sm font-weight-bold">0.000</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <div style="flex: 0 0 auto;
+                width: 19%; margin-left: auto;" class="align-middle text-center text-sm font-weight-bolder">0.000</div>
+                <div style="flex: 0 0 auto;
+                width: 10%;" class="align-middle text-center text-sm font-weight-bolder">0.000</div>
+                <div style="flex: 0 0 auto;
+                width: 11%;" class="align-middle text-center text-sm font-weight-bolder">0.000</div>
               </div>
             </div>
           </div>

@@ -1377,6 +1377,10 @@ progress {
     flex: 0 0 auto;
     width: 25%;
   }
+  .col-md-3-custom {
+    flex: 0 0 auto;
+    width: 25%;
+  }
 
   .col-md-4 {
     flex: 0 0 auto;
@@ -1402,6 +1406,7 @@ progress {
     flex: 0 0 auto;
     width: 66.666667%;
   }
+  
 
   .col-md-9 {
     flex: 0 0 auto;
