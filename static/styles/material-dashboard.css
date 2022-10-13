@@ -725,7 +725,7 @@ progress {
   }
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1000px) {
 
   .container,
   .container-sm,
@@ -27641,5 +27641,14 @@ pre[class*="language-"] {
     overflow: auto !important;
   }
 }
+
+/* for mobile  */
+@media screen and (max-width: 767px) {
+  .total-value{
+    width: 25% !important;
+  }
+}
+  
+
 
 /*# sourceMappingURL=dashboard-free.css.map */

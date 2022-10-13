@@ -84,11 +84,11 @@ function update_data_table() {
         product.innerHTML = '<td class="align-middle text-start text-sm"><span class="text-secondary text-sm font-weight-bold">' + overiew_data[i].product + '</span></td>';
         var level = row.insertCell(2);
         level.className = "align-middle text-center text-end text-sm";
-        level.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + overiew_data[i].level + '</span></td>';
+        level.innerHTML = '<td class="align-middle text-end text-sm"><span class="badge badge-sm bg-gradient-success">' + overiew_data[i].level + '</span></td>';
         var avgtemp = row.insertCell(3);
         avgtemp.className = "align-middle text-center text-end text-sm";
         // convert to float with 2 decimal places
-        avgtemp.innerHTML = '<td class="align-middle text-end text-sm"><span class="badge badge-sm bg-gradient-success">' + parseFloat(overiew_data[i].avgtemp).toFixed(2) + '</span></td>';
+        avgtemp.innerHTML = '<td class="align-middle text-end text-sm"><span class="text-secondary text-sm font-weight-bold">' + parseFloat(overiew_data[i].avgtemp).toFixed(2) + '</span></td>';
         var density = row.insertCell(4);
         density.className = "align-middle text-center text-end text-sm";
         // 1 decimal place
@@ -127,20 +127,12 @@ function update_total_value(){
             }
             }
     }
-    
-    // update total value in #total-table
-    var table_body = document.getElementById("total-table");
-    table_body.innerHTML = "";
-    var row = table_body.insertRow(0);
-    var grossvolume_cell = row.insertCell(0);
-    grossvolume_cell.className = "align-middle text-center text-sm";
-    grossvolume_cell.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + grossvolume.toFixed(3) + '</span></td>';
-    var netvolume_cell = row.insertCell(1);
-    netvolume_cell.className = "align-middle text-center text-sm";
-    netvolume_cell.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + netvolume.toFixed(3) + '</span></td>';
-    var mass_cell = row.insertCell(2);
-    mass_cell.className = "align-middle text-center text-sm";
-    mass_cell.innerHTML = '<td class="align-middle text-center text-sm"><span class="text-secondary text-sm font-weight-bold">' + mass.toFixed(3) + '</span></td>';
+    let total_gross__volume = document.getElementById("total-gross-volume");
+    total_gross__volume.innerHTML = grossvolume.toFixed(3);
+    let total_net_volume = document.getElementById("total-net-volume");
+    total_net_volume.innerHTML = netvolume.toFixed(3);
+    let total_mass = document.getElementById("total-mass");
+    total_mass.innerHTML = mass.toFixed(3);
 }
 
 function view_detail(row_index){
@@ -235,4 +227,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     );
 
+});
+
+// when page load
+document.addEventListener('DOMContentLoaded', () => {
+    // if role is admin then show #configuration_feature
+    if (role == "admin"){
+        document.getElementById("configuration_feature").style.display = "block";
+    }
 });

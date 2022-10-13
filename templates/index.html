@@ -7,7 +7,7 @@
   <!-- <link rel="apple-touch-icon" sizes="76x76" href="../../assets/img/apple-icon.png"> -->
   <!-- <link rel="icon" type="image/png" href="../../assets/img/favicon.png"> -->
   <title>
-    {{ title }}
+    Tank Monitor
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
@@ -45,7 +45,13 @@
       /* top: 25%;
       left: 50%; */
     }
+    .nav-link:hover{
+      color: #9cb9d4 !important;
+    }
   </style>
+  <script>
+    var role = {{ role|tojson }};
+  </script>
 </head>
 
 <body class="page-headers-sections" style="background-color: #f5f5f5;">
@@ -54,7 +60,7 @@
     <div class="container">
       <a class="navbar-brand" rel="tooltip" data-placement="bottom" target="_blank">
         <!-- add from page_config variable jinra2 -->
-        {{ page_config['name'] }}
+        KHO XĂNG DẦU HẢI HÀ - QUẢNG TRỊ
       </a>
       <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon mt-2">
@@ -63,7 +69,7 @@
           <span class="navbar-toggler-bar bar3"></span>
         </span>
       </button>
-      <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5" id="navigation">
+      <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ps-lg-5" id="navigation">
         <ul class="navbar-nav navbar-nav-hover ms-auto">
           <li class="nav-item dropdown dropdown-hover mx-2 ms-lg-5">
             <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center"  href="/">
@@ -75,6 +81,12 @@
             <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" href="/history" >
               <i class="material-icons opacity-6 me-2 text-md">history</i>
               History
+            </a>
+          </li>
+          <li class="nav-item dropdown dropdown-hover mx-2" style="display: none;" id="configuration_feature">
+            <a class="nav-link ps-2 d-flex justify-content-between cursor-pointer align-items-center" href="/configurations" >
+              <i class="material-icons opacity-6 me-2 text-md">settings</i>
+              Configurations
             </a>
           </li>
            <!-- log out -->
@@ -154,29 +166,32 @@
         </div>
 
         <div class="card my-4">
-          <div class="card-body px-0 pb-2">
-            <div class="table-responsive p-0">
-              <!-- row -->
+          
               <div class="row" style="display: flex;">
+              <!-- row -->
                 <div class="col-md-7">
-                  <!-- create dropdow with option Xăng RON92, Xăng RON95, Dầu DO 0.05S, Xăng E5 RON92 -->
-                  <!-- set middle -->
-                  <div class="form-group">
-                    <label for="exampleFormControlSelect1" class="font-weight-bold" style="padding-right: 20px; padding-left: 40px;">TOTAL per PRODUCT</label>
-                    <select id="total_dropdown" onchange="change_option(this.value)"  style="border-radius:5px;">
-                      <option value="0">Xăng RON92</option>
-                      <option value="1">Xăng RON95</option>
-                      <option value="2">Dầu DO 0.05S</option>
-                      <option value="3">Xăng E5 RON92</option>
-                    </select>
+                  <div class="card-body px-0 pb-2">
+                    <div class="table-responsive p-0">
+                    <!-- create dropdow with option Xăng RON92, Xăng RON95, Dầu DO 0.05S, Xăng E5 RON92 -->
+                    <!-- set middle -->
+                    <div class="form-group">
+                      <label for="exampleFormControlSelect1" class="font-weight-bold" style="padding-right: 20px; padding-left: 40px;">TOTAL per PRODUCT</label>
+                      <select id="total_dropdown" onchange="change_option(this.value)"  style="border-radius:5px;">
+                        <option value="0">Xăng RON92</option>
+                        <option value="1">Xăng RON95</option>
+                        <option value="2">Dầu DO 0.05S</option>
+                        <option value="3">Xăng E5 RON92</option>
+                      </select>
+                    </div>
+                    </div>  
                   </div>
                 </div>
-                <div style="flex: 0 0 auto;
-                width: 19%; margin-left: auto;" class="align-middle text-center text-sm font-weight-bolder">0.000</div>
-                <div style="flex: 0 0 auto;
-                width: 10%;" class="align-middle text-center text-sm font-weight-bolder">0.000</div>
-                <div style="flex: 0 0 auto;
-                width: 11%;" class="align-middle text-center text-sm font-weight-bolder">0.000</div>
+                <div id="total-gross-volume" style="flex: 0 0 auto;
+                width: 19%; margin-left: auto; padding-top: 20px" class="align-middle text-center text-sm font-weight-bolder total-value">0.000</div>
+                <div id="total-net-volume" style="flex: 0 0 auto;
+                width: 10%; padding-top: 20px" class="align-middle text-center text-sm font-weight-bolder total-value">0.000</div>
+                <div id="total-mass" style="flex: 0 0 auto;
+                width: 11%; padding-top: 20px" class="align-middle text-center text-sm font-weight-bolder total-value">0.000</div>
               </div>
             </div>
           </div>

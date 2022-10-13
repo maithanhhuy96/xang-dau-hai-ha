@@ -1,6 +1,8 @@
 [login_config]
-username=haiha
-password=haiha@123
+guest_usr=haiha
+guest_pwd=haiha@123
+admin_usr=admin
+admin_pwd=admin@123
 
 [page_settings]
 title = Tank Monitor

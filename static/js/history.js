@@ -154,3 +154,11 @@ function export_product_data(){
     // Download CSV file
     downloadCSV(csv.join("\n"), 'product_history.csv');
 }
+
+// when page load
+document.addEventListener('DOMContentLoaded', () => {
+    // if role is admin then show #configuration_feature
+    if (role == "admin"){
+        document.getElementById("configuration_feature").style.display = "block";
+    }
+});
