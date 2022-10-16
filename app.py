@@ -256,7 +256,7 @@ def configurations():
         cursor = conn.cursor()
         # update product, maxh, maxv, density
         cursor.execute(
-            f"UPDATE tankdata SET product = '{data['product']}', maxh = {data['maxh']}, maxv = {data['maxv']}, density = {data['density']} WHERE tankid = {data['tankno']}"
+            f"UPDATE tankdata SET product = '{data['product']}', maxh = {data['maxh']}, maxv = {data['maxv']}, density = {data['density']} WHERE tankid = {data['tankid']}"
         )
         conn.commit()
         return {"status": "success"}
@@ -279,7 +279,8 @@ def configurations():
         tank_data = []
         for row in rows:
             temp = dict(zip(column, row))
-            tank_data.append(temp)
+            if temp["tankid"] is not None:
+                tank_data.append(temp)
 
         return render_template(
             "configurations.html", page_config=page_config, tank_data=tank_data
