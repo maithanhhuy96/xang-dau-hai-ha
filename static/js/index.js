@@ -140,7 +140,6 @@ function view_detail(row_index){
 	console.log(row_index);
     if (flag==false){
 		setTimeout(function(){
-        gauge1 = loadLiquidFillGauge("fillgauge1", 0);
         var config1 = liquidFillGaugeDefaultSettings();
         config1.circleColor = "#FF7777";
         config1.textColor = "#FF4444";
@@ -235,4 +234,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (role == "admin"){
         document.getElementById("configuration_feature").style.display = "block";
     }
+    gauge1 = loadLiquidFillGauge("fillgauge1", 0);
 });
